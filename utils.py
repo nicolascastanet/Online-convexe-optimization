@@ -34,16 +34,6 @@ def simplex_proj(x):
 
     return np.maximum(0,x-theta)
 
-def l1_ball_proj(x,z=1,d=0,weighted=False):
-    if sum(abs(x)) <= z:
-        return x
-    else:
-        if weighted:
-            w = weighted_simplex_proj(abs(x)/z,d)
-        else :
-            w = simplex_proj(abs(x)/z)
-        return z*np.sign(x)*w
-
 def weighted_simplex_proj(x,D):
     """
     x : vector, D : diag matrix
@@ -57,4 +47,14 @@ def weighted_simplex_proj(x,D):
     theta = (sx[d0]-1)/sd[d0]
 
     return np.dot(np.linalg.inv(D),np.maximum(0,dx-theta))
+
+def l1_ball_proj(x,z=1,d=0,weighted=False):
+    if sum(abs(x)) <= z:
+        return x
+    else:
+        if weighted:
+            w = weighted_simplex_proj(abs(x)/z,d)
+        else :
+            w = simplex_proj(abs(x)/z)
+        return z*np.sign(x)*w
 
